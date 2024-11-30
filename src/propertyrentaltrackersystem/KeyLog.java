@@ -30,9 +30,11 @@ public class KeyLog {
                         viewKeyLogs();
                         break;
                     case 3:
+                        viewKeyLogs();
                         editKeyLog();
                         break;
                     case 4:
+                        viewKeyLogs();
                         deleteKeyLog();
                         break;
                     case 5:
@@ -51,32 +53,35 @@ public class KeyLog {
 
     private void addKeyLog() {
         System.out.println("Enter Key Log Details:");
-
+        
+        Key key = new Key();
+        key.viewKeys();
+        
         int keyId;
         do {
             System.out.print("Key ID: ");
             keyId = scan.nextInt();
-            if (!conf.doesIDExist("key", keyId)) {
+            if (!conf.doesIDExist("tbl_keys", "k_id", keyId)) {
                 System.out.println("Key ID doesn't exist.");
             }
-        } while (!conf.doesIDExist("key", keyId));
+        } while (!conf.doesIDExist("tbl_keys", "k_id", keyId));
         scan.nextLine();
 
         System.out.print("Issued To: ");
         String issuedTo = scan.nextLine();
-        System.out.print("Date (YYYY-MM-DD): ");
+        System.out.print("Date: ");
         String date = scan.nextLine();
         System.out.print("Action: ");
         String action = scan.nextLine();
 
-        String sql = "INSERT INTO key_log (key_id, issued_to, date, action) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO tbl_keylogs (k_id, issued_to, date, action) VALUES (?, ?, ?, ?)";
         conf.addRecord(sql, keyId, issuedTo, date, action);
     }
 
     public void viewKeyLogs() {
-        String query = "SELECT * FROM key_log";
+        String query = "SELECT * FROM tbl_keylogs";
         String[] headers = {"ID", "Key ID", "Issued To", "Date", "Action"};
-        String[] columns = {"id", "key_id", "issued_to", "date", "action"};
+        String[] columns = {"keylog_id", "k_id", "issued_to", "date", "action"};
 
         conf.viewRecords(query, headers, columns);
     }
@@ -86,20 +91,20 @@ public class KeyLog {
         do {
             System.out.print("Enter Key Log ID to edit: ");
             logId = scan.nextInt();
-            if (!conf.doesIDExist("key_log", logId)) {
+            if (!conf.doesIDExist("tbl_keylogs", "keylog_id", logId)) {
                 System.out.println("Key Log ID doesn't exist.");
             }
-        } while (!conf.doesIDExist("key_log", logId));
+        } while (!conf.doesIDExist("tbl_keylogs", "keylog_id", logId));
         scan.nextLine();
 
         int keyId;
         do {
             System.out.print("New Key ID: ");
             keyId = scan.nextInt();
-            if (!conf.doesIDExist("key", keyId)) {
+            if (!conf.doesIDExist("tbl_keys", "k_id", keyId)) {
                 System.out.println("Key ID doesn't exist.");
             }
-        } while (!conf.doesIDExist("key", keyId));
+        } while (!conf.doesIDExist("tbl_keys", "k_id", keyId));
         scan.nextLine();
 
         System.out.print("New Issued To: ");
@@ -109,15 +114,15 @@ public class KeyLog {
         System.out.print("New Action: ");
         String action = scan.nextLine();
 
-        String sql = "UPDATE key_log SET key_id = ?, issued_to = ?, date = ?, action = ? WHERE id = ?";
+        String sql = "UPDATE tbl_keylogs SET k_id = ?, issued_to = ?, date = ?, action = ? WHERE keylog_id = ?";
         conf.updateRecord(sql, keyId, issuedTo, date, action, logId);
     }
 
     private void deleteKeyLog() {
         System.out.print("Enter Key Log ID to delete: ");
-        int id = scan.nextInt();
-        String sql = "DELETE FROM key_log WHERE id = ?";
-        conf.deleteRecord(sql, id);
+        int keylog_id = scan.nextInt();
+        String sql = "DELETE FROM tbl_keylogs WHERE keylog_id = ?";
+        conf.deleteRecord(sql, keylog_id);
     }
 }
 

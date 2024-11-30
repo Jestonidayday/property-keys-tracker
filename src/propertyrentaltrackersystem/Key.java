@@ -30,9 +30,11 @@ public class Key {
                         viewKeys();
                         break;
                     case 3:
+                        viewKeys();
                         editKey();
                         break;
                     case 4:
+                        viewKeys();
                         deleteKey();
                         break;
                     case 5:
@@ -50,31 +52,34 @@ public class Key {
     }
 
     private void addKey() {
-        System.out.println("Enter Key Details:");
-
+        System.out.println("\nEnter Key Details:");
+        
+        Property prop = new Property();
+        prop.viewProperties();
+        
         int propertyId;
         do {
             System.out.print("Property ID: ");
             propertyId = scan.nextInt();
-            if (!conf.doesIDExist("property", propertyId)) {
+            if (!conf.doesIDExist("tbl_property", "p_id", propertyId)) {
                 System.out.println("Property ID doesn't exist.");
             }
-        } while (!conf.doesIDExist("property", propertyId));
+        } while (!conf.doesIDExist("tbl_property", "p_id", propertyId));
         scan.nextLine();
 
         System.out.print("Key Code: ");
         String keyCode = scan.nextLine();
         System.out.print("Status: ");
-        String status = scan.nextLine();
+        String k_status = scan.nextLine();
 
-        String sql = "INSERT INTO key (property_id, key_code, status) VALUES (?, ?, ?)";
-        conf.addRecord(sql, propertyId, keyCode, status);
+        String sql = "INSERT INTO tbl_keys (p_id, key_code, k_status) VALUES (?, ?, ?)";
+        conf.addRecord(sql, propertyId, keyCode, k_status);
     }
 
     public void viewKeys() {
-        String query = "SELECT * FROM key";
+        String query = "SELECT * FROM tbl_keys";
         String[] headers = {"ID", "Property ID", "Key Code", "Status"};
-        String[] columns = {"id", "property_id", "key_code", "status"};
+        String[] columns = {"k_id", "p_id", "key_code", "k_status"};
 
         conf.viewRecords(query, headers, columns);
     }
@@ -84,36 +89,36 @@ public class Key {
         do {
             System.out.print("Enter Key ID to edit: ");
             keyId = scan.nextInt();
-            if (!conf.doesIDExist("key", keyId)) {
+            if (!conf.doesIDExist("tbl_keys", "k_id", keyId)) {
                 System.out.println("Key ID doesn't exist.");
             }
-        } while (!conf.doesIDExist("key", keyId));
+        } while (!conf.doesIDExist("tbl_keys", "k_id", keyId));
         scan.nextLine();
 
         int propertyId;
         do {
             System.out.print("New Property ID: ");
             propertyId = scan.nextInt();
-            if (!conf.doesIDExist("property", propertyId)) {
+            if (!conf.doesIDExist("tbl_property", "p_id", propertyId)) {
                 System.out.println("Property ID doesn't exist.");
             }
-        } while (!conf.doesIDExist("property", propertyId));
+        } while (!conf.doesIDExist("tbl_property", "p_id", propertyId));
         scan.nextLine();
 
         System.out.print("New Key Code: ");
         String keyCode = scan.nextLine();
         System.out.print("New Status: ");
-        String status = scan.nextLine();
+        String k_status = scan.nextLine();
 
-        String sql = "UPDATE key SET property_id = ?, key_code = ?, status = ? WHERE id = ?";
-        conf.updateRecord(sql, propertyId, keyCode, status, keyId);
+        String sql = "UPDATE tbl_keys SET p_id = ?, key_code = ?, k_status = ? WHERE k_id = ?";
+        conf.updateRecord(sql, propertyId, keyCode, k_status, keyId);
     }
 
     private void deleteKey() {
         System.out.print("Enter Key ID to delete: ");
-        int id = scan.nextInt();
-        String sql = "DELETE FROM key WHERE id = ?";
-        conf.deleteRecord(sql, id);
+        int k_id = scan.nextInt();
+        String sql = "DELETE FROM tbl_keys WHERE k_id = ?";
+        conf.deleteRecord(sql, k_id);
     }
 }
 

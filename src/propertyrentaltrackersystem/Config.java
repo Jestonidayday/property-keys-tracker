@@ -144,9 +144,9 @@ public void addRecord(String sql, Object... values) {
         }
     }
     
-    public boolean doesIDExist(String table, int id){
+    public boolean doesIDExist(String table, String idCol, int id){
         
-        String findID = "SELECT * FROM " + table + " WHERE ID = ?";
+        String findID = "SELECT * FROM " + table + " WHERE " + idCol + " = ?";
         
         try (Connection con = connectDB();
             PreparedStatement pst = con.prepareStatement(findID);){
@@ -164,8 +164,8 @@ public void addRecord(String sql, Object... values) {
         return false;
     }
     
-    public String getDataFromID(String table, int id, String column){
-        String findID = "SELECT " + column + " FROM " + table + " WHERE ID = ?";
+    public String getDataFromID(String table, int id, String idCol, String column){
+        String findID = "SELECT " + column + " FROM " + table + " WHERE " + idCol + " = ?";
         String data = "";
         
         try (Connection con = connectDB();      

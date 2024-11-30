@@ -30,9 +30,11 @@ public class Property {
                         viewProperties();
                         break;
                     case 3:
+                        viewProperties();
                         editProperty();
                         break;
                     case 4:
+                        viewProperties();
                         deleteProperty();
                         break;
                     case 5:
@@ -52,20 +54,20 @@ public class Property {
     private void addProperty() {
         System.out.println("Enter Property Details:");
         System.out.print("Name: ");
-        String name = scan.nextLine();
+        String p_name = scan.nextLine();
         System.out.print("Address: ");
-        String address = scan.nextLine();
+        String p_address = scan.nextLine();
         System.out.print("Type: ");
-        String type = scan.nextLine();
+        String p_type = scan.nextLine();
 
-        String sql = "INSERT INTO property (name, address, type) VALUES (?, ?, ?)";
-        conf.addRecord(sql, name, address, type);
+        String sql = "INSERT INTO tbl_property (p_name, p_address, p_type) VALUES (?, ?, ?)";
+        conf.addRecord(sql, p_name, p_address, p_type);
     }
 
     public void viewProperties() {
-        String query = "SELECT * FROM property";
+        String query = "SELECT * FROM tbl_property";
         String[] headers = {"ID", "Name", "Address", "Type"};
-        String[] columns = {"id", "name", "address", "type"};
+        String[] columns = {"p_id", "p_name", "p_address", "p_type"};
 
         conf.viewRecords(query, headers, columns);
     }
@@ -75,28 +77,28 @@ public class Property {
         do {
             System.out.print("Enter Property ID to edit: ");
             propertyId = scan.nextInt();
-            if (!conf.doesIDExist("property", propertyId)) {
+            if (!conf.doesIDExist("tbl_property", "p_id", propertyId)) {
                 System.out.println("Property ID doesn't exist.");
             }
-        } while (!conf.doesIDExist("property", propertyId));
+        } while (!conf.doesIDExist("tbl_property", "p_id", propertyId));
         scan.nextLine();
 
         System.out.print("New Name: ");
-        String name = scan.nextLine();
+        String p_name = scan.nextLine();
         System.out.print("New Address: ");
-        String address = scan.nextLine();
+        String p_address = scan.nextLine();
         System.out.print("New Type: ");
-        String type = scan.nextLine();
+        String p_type = scan.nextLine();
 
-        String sql = "UPDATE property SET name = ?, address = ?, type = ? WHERE id = ?";
-        conf.updateRecord(sql, name, address, type, propertyId);
+        String sql = "UPDATE tbl_property SET p_name = ?, p_address = ?, p_type = ? WHERE p_id = ?";
+        conf.updateRecord(sql, p_name, p_address, p_type, propertyId);
     }
 
     private void deleteProperty() {
         System.out.print("Enter Property ID to delete: ");
-        int id = scan.nextInt();
-        String sql = "DELETE FROM property WHERE id = ?";
-        conf.deleteRecord(sql, id);
+        int p_id = scan.nextInt();
+        String sql = "DELETE FROM tbl_property WHERE p_id = ?";
+        conf.deleteRecord(sql, p_id);
     }
 }
 
